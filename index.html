@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>lovevsick // hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --glass:rgba(255,255,255,0.03);
+  --glass-hover:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.05);
+  --purple:#ff3e3e;
+  --cyan:rgba(255,255,255,0.5);
+  --text:#e0e0e0;
+  --dim:rgba(255,255,255,0.4);
+  --muted:rgba(255,255,255,0.2);
+  --mono:'JetBrains Mono',monospace;
+  --display:'Anton',sans-serif;
+  --body:'Inter',sans-serif;
+  --r:4px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(255,62,62,.3);border-radius:2px}
+img{display:block}
+
+/* bg */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 30% 30%, #3a0a0a 0%, #0a0a0a 70%);z-index:0;pointer-events:none;opacity:0.6;}
+
+/* orbs */
+.orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+.o1{width:580px;height:580px;background:radial-gradient(circle,rgba(255,62,62,.15) 0%,transparent 70%);top:-150px;left:-120px;animation:d1 16s ease-in-out infinite alternate}
+.o2{width:440px;height:440px;background:radial-gradient(circle,rgba(255,255,255,.05) 0%,transparent 70%);bottom:5%;right:-80px;animation:d2 13s ease-in-out infinite alternate}
+.o3{width:300px;height:300px;background:radial-gradient(circle,rgba(255,62,62,.1) 0%,transparent 70%);bottom:30%;left:8%;animation:d1 20s ease-in-out infinite alternate-reverse}
+@keyframes d1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,28px) scale(1.06)}}
+@keyframes d2{0%{transform:translate(0,0)}100%{transform:translate(-30px,38px) scale(1.09)}}
+
+/* layout */
+.wrap{max-width:840px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+section{padding:80px 0}
+.glass{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+
+/* section label */
+.sec-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--purple);margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-inner{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+
+.avatar-wrap{position:relative;width:148px;height:148px;margin:0 auto 30px;cursor:default}
+.av-img{width:136px;height:136px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,62,62,.45);box-shadow:0 0 0 6px rgba(255,62,62,.07),0 0 44px rgba(255,62,62,.22);transition:transform .4s ease,box-shadow .4s ease;position:relative;z-index:2}
+.avatar-wrap:hover .av-img{transform:scale(1.06);box-shadow:0 0 0 8px rgba(255,62,62,.1),0 0 65px rgba(255,62,62,.38)}
+.av-decor{position:absolute;width:210px;height:210px;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:contain;pointer-events:none;z-index:3;animation:floatD 6s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,62,62,.28))}
+@keyframes floatD{0%,100%{transform:translate(-50%,-50%) rotate(-3deg) scale(1)}50%{transform:translate(-50%,-57%) rotate(3deg) scale(1.04)}}
+.av-status{position:absolute;bottom:8px;right:8px;z-index:4;width:15px;height:15px;background:#22c55e;border-radius:50%;border:2px solid var(--bg);animation:sP 2.2s ease-in-out infinite}
+@keyframes sP{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.45)}50%{box-shadow:0 0 0 7px rgba(34,197,94,0)}}
+
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,62,62,.06);border:1px solid rgba(255,62,62,.18);border-radius:100px;padding:5px 16px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:.1em;margin-bottom:20px}
+.od{width:6px;height:6px;background:#00ff00;border-radius:50%;box-shadow:0 0 8px #00ff00;animation:sP 2s ease-in-out infinite}
+.hero-name{font-family:var(--display);text-transform:uppercase;font-size:clamp(3rem,10vw,6rem);font-weight:400;line-height:1;letter-spacing:2px;color:#ff3e3e;margin-bottom:18px;animation:fU .9s ease both}
+.typing-line{font-size:clamp(12px,2vw,15px);color:var(--dim);min-height:1.6em;animation:fU .9s ease .2s both}
+.tcur{display:inline-block;width:2px;height:.9em;background:var(--purple);vertical-align:text-bottom;margin-left:1px;animation:bl .85s step-end infinite}
+@keyframes fU{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:10px;letter-spacing:.15em;animation:fU 1s ease 1.8s both}
+.scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--muted),transparent);animation:sA 2s ease-in-out infinite}
+@keyframes sA{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── IDENTITY ─── */
+.id-card{padding:36px 40px;position:relative;overflow:hidden}
+.id-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purple),var(--cyan),transparent)}
+.id-top{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.id-ava{width:52px;height:52px;border-radius:12px;flex-shrink:0;overflow:hidden;border:1px solid var(--border)}
+.id-ava img{width:100%;height:100%;object-fit:cover}
+.id-handle{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.id-role{font-size:11px;color:var(--muted);margin-top:3px}
+.id-bio{font-size:13px;color:rgba(255,255,255,.46);border-left:2px solid rgba(255,62,62,.35);padding-left:14px;margin-bottom:22px;font-style:italic}
+.id-chips{display:flex;gap:10px;flex-wrap:wrap}
+.id-chip{font-size:11px;padding:4px 12px;border-radius:100px;background:var(--glass);border:1px solid var(--border);color:var(--dim);display:flex;align-items:center;gap:6px}
+
+/* ─── ABOUT ─── */
+.about-p{font-size:14px;color:rgba(255,255,255,.46);line-height:2}
+.about-p strong{color:var(--text);font-weight:500}
+.ac{color:var(--purple)}.ac2{color:var(--cyan)}
+
+/* ─── STACK ─── */
+.stack-rows{display:flex;flex-direction:column;gap:16px}
+.s-row{display:flex;align-items:flex-start;gap:16px}
+.s-lbl{font-size:11px;color:var(--muted);letter-spacing:.1em;width:82px;flex-shrink:0;padding-top:5px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{padding:5px 14px;border-radius:100px;font-size:12px;background:var(--glass);border:1px solid var(--border);color:var(--dim);cursor:default;transition:all .25s ease}
+.tag:hover{color:var(--text);border-color:rgba(255,62,62,.4);box-shadow:0 0 14px rgba(255,62,62,.18)}
+
+/* ─── PROJECTS ─── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.pcard{padding:28px;cursor:default;transition:transform .3s,box-shadow .3s,border-color .3s,background .3s;position:relative;overflow:hidden}
+.pcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,rgba(255,62,62,.07),transparent 60%);opacity:0;transition:opacity .4s}
+.pcard:hover{transform:translateY(-6px);border-color:rgba(255,62,62,.25);background:var(--glass-hover);box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 30px rgba(255,62,62,.09)}
+.pcard:hover::before{opacity:1}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.pn{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:-.01em}
+.badge{font-size:10px;padding:3px 10px;border-radius:100px;font-family:var(--mono);letter-spacing:.06em}
+.ba{background:rgba(255,62,62,.08);border:1px solid rgba(255,62,62,.2);color:#ff3e3e}
+.be{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+.bt{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--dim)}
+.pd{font-size:12px;color:rgba(255,255,255,.38);line-height:1.75;margin-bottom:16px}
+.ptags{display:flex;gap:6px;flex-wrap:wrap}
+.ptag{font-size:10px;color:var(--muted);background:rgba(255,255,255,.025);border:1px solid var(--border);padding:2px 9px;border-radius:4px}
+
+/* ─── TERMINAL ─── */
+.terminal{background:#050505;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.t-bar{padding:10px 16px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.td{width:10px;height:10px;border-radius:50%}
+.tdr{background:rgba(255,80,70,.6)}.tdy{background:rgba(255,185,0,.5)}.tdg{background:rgba(0,195,90,.5)}
+.t-ttl{font-size:11px;color:var(--muted);margin-left:8px;letter-spacing:.1em}
+.t-body{padding:28px 32px;font-family:var(--mono);font-size:13px;line-height:2.1}
+.tp{color:var(--purple)}.tc2{color:var(--cyan)}.tk{color:rgba(255,255,255,.35)}.tv{color:var(--text)}
+.t-row{display:flex;gap:10px}
+.tcur2{display:inline-block;width:8px;height:14px;background:var(--purple);vertical-align:middle;animation:bl .85s step-end infinite}
+
+/* ─── PERSONAL ─── */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px}
+.pi{padding:20px 22px;display:flex;align-items:center;gap:14px;transition:border-color .3s,background .3s;cursor:default}
+.pi:hover{border-color:rgba(255,62,62,.2);background:rgba(255,62,62,.025)}
+.pi-ico{font-size:20px}
+.pi-lbl{font-size:12px;color:var(--dim)}
+.pi-sub{font-size:11px;color:var(--muted)}
+
+/* ─── LINKS ─── */
+.links-row{display:flex;gap:12px;flex-wrap:wrap}
+.lbtn{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:12px;font-size:13px;font-family:var(--mono);text-decoration:none;color:var(--dim);background:var(--glass);border:1px solid var(--border);transition:all .3s ease;position:relative;overflow:hidden}
+.lbtn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,62,62,.1),transparent 65%);opacity:0;transition:opacity .3s}
+.lbtn:hover{color:var(--text);border-color:rgba(255,62,62,.35);box-shadow:0 0 24px rgba(255,62,62,.18),0 4px 20px rgba(0,0,0,.3);transform:translateY(-2px)}
+.lbtn:hover::before{opacity:1}
+.lbtn i{font-size:15px}
+
+/* ─── FOOTER ─── */
+footer{padding:40px 0;text-align:center;font-size:11px;color:var(--muted);letter-spacing:.12em;border-top:1px solid var(--border);position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════
+   MUSIC PLAYER
+═══════════════════════════════════════════ */
+#player{
+  position:fixed;bottom:22px;right:22px;z-index:9999;
+  width:272px;
+  background:rgba(8,8,8,0.9);
+  border:1px solid rgba(255,62,62,.18);
+  border-radius:18px;
+  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  box-shadow:0 8px 40px rgba(0,0,0,.55),0 0 28px rgba(255,62,62,.05);
+  overflow:hidden;
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+#player::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,62,62,.4),rgba(255,255,255,.2),transparent)}
+#player:hover{transform:scale(1.016);box-shadow:0 14px 54px rgba(0,0,0,.6),0 0 38px rgba(255,62,62,.1)}
+
+.p-top{display:flex;align-items:center;gap:13px;padding:16px 16px 10px}
+.p-cover-wrap{position:relative;flex-shrink:0}
+#pCover{
+  width:54px;height:54px;border-radius:10px;object-fit:cover;
+  border:1px solid rgba(255,62,62,.2);
+  transition:opacity .35s ease,transform .3s ease;
+}
+#pCover.fading{opacity:0}
+#pCover.spinning{animation:spin 8s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.p-info{flex:1;min-width:0}
+.p-title{font-family:var(--display);font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.p-artist{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+
+.p-ctrl{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 16px 10px}
+.pb{width:34px;height:34px;border-radius:10px;border:none;cursor:pointer;background:rgba(255,255,255,.05);color:var(--dim);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .22s ease}
+.pb:hover{background:rgba(255,62,62,.15);color:var(--text);box-shadow:0 0 12px rgba(255,62,62,.2)}
+.pb.on{background:rgba(255,62,62,.18);color:var(--purple);box-shadow:0 0 14px rgba(255,62,62,.25)}
+.pb-play{width:40px;height:40px;font-size:15px;background:rgba(255,62,62,.16);color:var(--purple)}
+.pb-play:hover{background:rgba(255,62,62,.28);box-shadow:0 0 20px rgba(255,62,62,.3)}
+
+.p-prog-wrap{padding:0 16px 10px}
+.p-bar{width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.08);cursor:pointer;position:relative}
+.p-fill{height:100%;background:linear-gradient(to right,rgba(255,255,255,.2),var(--purple));border-radius:2px;width:0%;transition:width .18s linear;pointer-events:none;box-shadow:0 0 8px rgba(255,62,62,0.4)}
+.p-times{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px}
+
+.p-vol-row{display:flex;align-items:center;gap:8px;padding:0 16px 14px}
+.p-vi{font-size:11px;color:var(--muted)}
+#volSlider{-webkit-appearance:none;appearance:none;flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.08);outline:none;cursor:pointer}
+#volSlider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--purple);cursor:pointer;box-shadow:0 0 6px rgba(255,62,62,.4)}
+#volSlider::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--purple);border:none}
+
+/* ─── responsive ─── */
+@media(max-width:600px){
+  section{padding:56px 0}
+  .id-card{padding:24px}
+  .t-body{padding:20px;font-size:12px}
+  .s-row{flex-direction:column;gap:8px}
+  .s-lbl{width:auto;padding-top:0}
+  .proj-grid{grid-template-columns:1fr}
+  .links-row{flex-direction:column}
+  .lbtn{justify-content:center}
+  #player{width:calc(100vw - 32px);right:16px;bottom:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="wrap hero-inner">
+    <div class="avatar-wrap">
+      <img class="av-img"
+        src="{{AVATAR_URL}}"
+        alt="lovevsick"
+        onerror="this.style.cssText='width:136px;height:136px;border-radius:50%;background:linear-gradient(135deg,rgba(255,62,62,.3),rgba(255,255,255,.1));position:relative;z-index:2';this.removeAttribute('src')"
+      />
+      <img class="av-decor"
+        src="/assets/img/mong-vuot-rong.png"
+        alt=""
+        onerror="this.style.display='none'"
+      />
+      <div class="av-status"></div>
+    </div>
+    <div class="hero-pill"><span class="od"></span>online // active</div>
+    <h1 class="hero-name">Kietlaanh</h1>
+    <p class="typing-line" id="typingEl"><span class="tcur"></span></p>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- ══ IDENTITY ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// identity</p>
+    <div class="glass id-card reveal">
+      <div class="id-top">
+        <div class="id-ava">
+          <img src="{{AVATAR_URL}}" alt="lv"
+            onerror="this.parentElement.style.background='linear-gradient(135deg,rgba(255,62,62,.3),rgba(255,255,255,.1))'"/>
+        </div>
+        <div>
+          <div class="id-handle">Kietlaanh</div>
+          <div class="id-role">dev · builder · breaker</div>
+        </div>
+      </div>
+      <p class="id-bio">dev | gamer | builder — i break things and rebuild them better.</p>
+      <div class="id-chips">
+        <span class="id-chip">🟢 coding</span>
+        <span class="id-chip">🎧 music</span>
+        <span class="id-chip">🎮 gaming</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// about</p>
+    <p class="about-p reveal">
+      <strong>14 y/o developer</strong> from <span class="ac">Vietnam</span>.<br/>
+      wired for <strong>pentesting</strong>, low-level thinking, and building things that feel like they shouldn't exist.<br/>
+      mostly tools, mostly midnight, mostly shipping.<br/>
+      currently building a <span class="ac2">manga reading platform</span> from scratch.
+    </p>
+  </div>
+</section>
+
+<!-- ══ TECH STACK ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// tech stack</p>
+    <div class="stack-rows reveal">
+      <div class="s-row">
+        <span class="s-lbl">languages</span>
+        <div class="tags"><span class="tag">C++</span></div>
+      </div>
+      <div class="s-row">
+        <span class="s-lbl">tools</span>
+        <div class="tags"><span class="tag">Git</span><span class="tag">VS Code</span><span class="tag">Antigravity</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// projects</p>
+    <div class="proj-grid">
+      <div class="glass pcard reveal" style="text-align: center;">
+        <p class="pd" style="margin-bottom: 0;">Chưa có dự án gì</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PC SETUP ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// system</p>
+    <div class="terminal reveal">
+      <div class="t-bar">
+        <span class="td tdr"></span><span class="td tdy"></span><span class="td tdg"></span>
+        <span class="t-ttl">lakiet@system ~ neofetch</span>
+      </div>
+      <div class="t-body">
+        <div class="t-row"><span class="tp">❯</span><span class="tc2">SYSTEM</span><span class="tv">// LAKIET-SYSTEM</span></div>
+        <div style="height:6px"></div>
+        <div class="t-row"><span class="tk">CPU&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv">Intel i3-1005G1 @ 1.2GHz</span></div>
+        <div class="t-row"><span class="tk">GPU&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv">Intel HD Graphics</span></div>
+        <div class="t-row"><span class="tk">RAM&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv">4GB DDR4</span></div>
+        <div class="t-row"><span class="tk">OS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv" style="color:var(--cyan)">Arch Linux</span></div>
+        <div class="t-row"><span class="tk">WM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv" style="color:var(--purple)">Hyprland</span></div>
+        <div class="t-row"><span class="tk">UPTIME&nbsp;</span><span style="color:rgba(255,255,255,.12)">:</span><span class="tv">always on</span></div>
+        <div style="height:6px"></div>
+        <div class="t-row"><span class="tp">❯</span><span class="tcur2"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PERSONAL ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// interests</p>
+    <div class="pg">
+      <div class="glass pi reveal"><span class="pi-ico">🎮</span><div><div class="pi-lbl">gaming</div><div class="pi-sub">minecraft / osu!</div></div></div>
+      <div class="glass pi reveal"><span class="pi-ico">📺</span><div><div class="pi-lbl">anime</div><div class="pi-sub">rom-coms mostly</div></div></div>
+      <div class="glass pi reveal"><span class="pi-ico">🎵</span><div><div class="pi-lbl">music</div><div class="pi-sub">drill / chill</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LINKS ══ -->
+<section>
+  <div class="wrap">
+    <p class="sec-label reveal">// contact</p>
+    <div class="links-row reveal">
+      <a href="https://github.com/lakietmod" target="_blank" class="lbtn"><i class="fab fa-github"></i> github</a>
+      <a href="https://lovevsick.xyz" class="lbtn"><i class="fas fa-globe"></i> website</a>
+      <a href="https://lovevsick.xyz/music" class="lbtn"><i class="fas fa-music"></i> music</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Kietlaanh · <span style="color:var(--purple)">2026</span> · lakiet</div>
+</footer>
+
+<!-- ══ MUSIC PLAYER ══ -->
+<div id="player">
+  <div class="p-top">
+    <div class="p-cover-wrap">
+      <img id="pCover" src="" alt="cover"/>
+    </div>
+    <div class="p-info">
+      <div class="p-title" id="pTitle">—</div>
+      <div class="p-artist" id="pArtist">select a track</div>
+    </div>
+  </div>
+  <div class="p-ctrl">
+    <button class="pb" id="btnPrev" title="Prev"><i class="fas fa-backward-step"></i></button>
+    <button class="pb pb-play" id="btnPlay" title="Play/Pause"><i class="fas fa-play" id="playIcon"></i></button>
+    <button class="pb" id="btnNext" title="Next"><i class="fas fa-forward-step"></i></button>
+  </div>
+  <div class="p-prog-wrap">
+    <div class="p-bar" id="progBar"><div class="p-fill" id="progFill"></div></div>
+    <div class="p-times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+  </div>
+  <div class="p-vol-row">
+    <i class="fas fa-volume-low p-vi"></i>
+    <input type="range" id="volSlider" min="0" max="1" step="0.02" value="0.7"/>
+    <i class="fas fa-volume-high p-vi"></i>
+  </div>
+</div>
+
+<audio id="audioEl" preload="none"></audio>
+
+<script>
+/* ── TYPING ── */
+const lines=["booting lakiet@system...","developer / gamer"];
+const tEl=document.getElementById("typingEl");
+let li=0,ci=0,del=false;
+function type(){
+  const cur=lines[li];
+  if(!del){
+    tEl.innerHTML=cur.slice(0,ci)+'<span class="tcur"></span>';
+    ci++;
+    if(ci>cur.length){del=true;setTimeout(type,1700);return;}
+    setTimeout(type,55+Math.random()*35);
+  } else {
+    tEl.innerHTML=cur.slice(0,ci-1)+'<span class="tcur"></span>';
+    ci--;
+    if(ci<0){del=false;li=(li+1)%lines.length;ci=0;setTimeout(type,420);return;}
+    setTimeout(type,28+Math.random()*18);
+  }
+}
+setTimeout(type,700);
+
+/* ── SCROLL REVEAL ── */
+const revs=document.querySelectorAll(".reveal");
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");ro.unobserve(x.target);}});},{threshold:0.1});
+revs.forEach((r,i)=>{r.style.transitionDelay=`${(i%4)*65}ms`;ro.observe(r);});
+
+/* ══════════════════════════════════════
+   MUSIC PLAYER
+══════════════════════════════════════ */
+let songs = [];
+
+const audio=document.getElementById("audioEl");
+const pCover=document.getElementById("pCover");
+const pTitle=document.getElementById("pTitle");
+const pArtist=document.getElementById("pArtist");
+const playIcon=document.getElementById("playIcon");
+const progFill=document.getElementById("progFill");
+const progBar=document.getElementById("progBar");
+const tCur=document.getElementById("tCur");
+const tDur=document.getElementById("tDur");
+const volSlider=document.getElementById("volSlider");
+const btnPlay=document.getElementById("btnPlay");
+const btnNext=document.getElementById("btnNext");
+const btnPrev=document.getElementById("btnPrev");
+
+let curIdx=-1,started=false;
+
+function fmt(s){
+  if(isNaN(s)||!isFinite(s))return"0:00";
+  const m=Math.floor(s/60),ss=Math.floor(s%60);
+  return`${m}:${ss.toString().padStart(2,"0")}`;
+}
+function rnd(ex){
+  if(songs.length===1)return 0;
+  let n;do{n=Math.floor(Math.random()*songs.length);}while(n===ex);
+  return n;
+}
+
+function loadSong(idx,autoplay){
+  const s=songs[idx];curIdx=idx;
+  pCover.classList.add("fading");
+  setTimeout(()=>{
+    pCover.src=s.cover;
+    pCover.onload=()=>pCover.classList.remove("fading");
+    pCover.onerror=()=>{pCover.src="";pCover.classList.remove("fading");};
+  },320);
+  pTitle.textContent=s.title;
+  pArtist.textContent=s.artist;
+  audio.src=s.url;
+  audio.volume=parseFloat(volSlider.value);
+  progFill.style.width="0%";
+  tCur.textContent="0:00";tDur.textContent="0:00";
+  if(autoplay){
+    audio.play().then(()=>setPlay(true)).catch(()=>setPlay(false));
+  }
+}
+
+function setPlay(p){
+  if(p){
+    playIcon.className="fas fa-pause";
+    pCover.classList.add("spinning");
+    btnPlay.classList.add("on");
+  } else {
+    playIcon.className="fas fa-play";
+    pCover.classList.remove("spinning");
+    btnPlay.classList.remove("on");
+  }
+}
+
+function toggle(){
+  if(!started){started=true;loadSong(rnd(-1),true);return;}
+  if(audio.paused){audio.play().then(()=>setPlay(true)).catch(()=>{});}
+  else{audio.pause();setPlay(false);}
+}
+
+btnPlay.addEventListener("click",toggle);
+btnNext.addEventListener("click",()=>{loadSong(rnd(curIdx),true);started=true;});
+btnPrev.addEventListener("click",()=>{
+  if(audio.currentTime>3){audio.currentTime=0;return;}
+  let p=curIdx-1;if(p<0)p=songs.length-1;
+  loadSong(p,true);started=true;
+});
+
+audio.addEventListener("timeupdate",()=>{
+  if(!audio.duration)return;
+  progFill.style.width=(audio.currentTime/audio.duration*100)+"%";
+  tCur.textContent=fmt(audio.currentTime);
+  tDur.textContent=fmt(audio.duration);
+});
+audio.addEventListener("ended",()=>loadSong(rnd(curIdx),true));
+audio.addEventListener("play",()=>setPlay(true));
+audio.addEventListener("pause",()=>setPlay(false));
+volSlider.addEventListener("input",()=>{audio.volume=parseFloat(volSlider.value);});
+progBar.addEventListener("click",e=>{
+  if(!audio.duration)return;
+  const r=progBar.getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+});
+
+/* auto-start */
+window.addEventListener("load", async ()=>{
+  try {
+    const res = await fetch('/songs.json');
+    songs = await res.json();
+  } catch (err) {
+    console.error('Failed to load songs', err);
+    return;
+  }
+  
+  const idx=rnd(-1);
+  loadSong(idx,false);
+  started=false;
+  audio.muted=true;
+  audio.play().then(()=>{
+    audio.muted=false;
+    audio.volume=parseFloat(volSlider.value);
+    setPlay(true);started=true;
+  }).catch(()=>{
+    audio.muted=false;
+    const first=()=>{if(!started){started=true;loadSong(rnd(-1),true);}document.removeEventListener("click",first);};
+    document.addEventListener("click",first);
+  });
+});
+</script>
+</body>
+</html>
